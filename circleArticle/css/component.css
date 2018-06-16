@@ -1,0 +1,552 @@
+/*
+ * ========================================================================
+ * 周连军通用CSS 框架   
+ * Verson 1.0.0
+ * ========================================================================
+ */
+@charset "UTF-8";
+/*通用样式*/
+*{
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+	font-family: PingFangSC-Regular;
+}
+body,
+html{
+	height: 100%;
+	font-family: PingFangSC-Regular;
+	background: #f0f0f0;
+}
+[v-cloak] {
+    display: none;
+}
+html{
+	font-size: 20px!important;
+}
+@media only screen and (min-width: 400px) {
+	html {
+		font-size: 21.33333333px !important;
+	}
+}
+@media only screen and (min-width: 414px) {
+	html {
+		font-size: 21px !important;
+	}
+}
+@media only screen and (min-width: 480px) {
+	html {
+		font-size: 25.6px !important;
+	}
+}
+a:hover {
+	outline: 0;
+}
+textarea {
+	overflow: hidden;
+	resize: none;
+}
+button {
+	overflow: visible;
+}
+button,select {
+	text-transform: none;
+}
+button,input,select,textarea {
+	font: inherit;
+	color: inherit;
+}
+html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,hr,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
+	margin:0;
+	border:0;
+	padding:0;
+	font-style:normal;
+}
+/*超出自动隐藏*/
+.ellipsis{
+	/*white-space : normal nowrap*/ 
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.ellipsis-2 {
+	display: -webkit-box!important;
+	overflow: hidden!important;
+	text-overflow: ellipsis!important;
+	word-wrap: break-word!important;
+	white-space: normal !important;
+	-webkit-line-clamp: 2!important;
+	-webkit-box-orient: vertical!important;
+}
+/*定位*/
+.p-f{
+	position: fixed;
+}
+.p-a{
+	position: absolute;
+}
+.p-r{
+	position: relative;
+}
+.d-b{
+	display: block;
+}
+.d-i{
+	display: inline-block;
+}
+/*层级*/
+.z-999{
+	z-index: 999;
+}
+/*位置*/
+.l-0{
+	left: 0;
+}
+.l-b20{
+	left: 20%;
+}
+.r-0{
+	right: 0;
+}
+.r-b20{
+	right: 20%;
+}
+.t-0{
+	top: 0;
+}
+.t-4{
+	top: .2rem;
+}
+.t-6{
+	top: .3rem;
+}
+.b-0{
+	bottom: 0;
+}
+/*边框*/
+.outline-n{
+	outline: none;
+}
+.b-n{
+	border: none;
+}
+.b-t{
+	border-top: 1px solid #f0f0f0;
+}
+.b-b{
+	border-bottom: 1px solid #f0f0f0;
+}
+.b-r-35{
+	border-radius: 1.75rem;
+}
+.b-r-b50{
+	border-radius: 50%;
+}
+/*active*/
+.active-f0:active{
+	background: #f0f0f0;
+}
+/*边距*/
+.p-t-5{
+	padding-top: .25rem;
+}
+.p-t-10{
+	padding-top: .5rem;
+}
+.p-t-15{
+	padding-top: .75rem;
+}
+.p-t-20{
+	padding-top: 1rem;
+}
+.p-b-5{
+	padding-bottom: .25rem;
+}
+.p-b-10{
+	padding-bottom: .5rem;
+}
+.p-b-15{
+	padding-bottom: .75rem;
+}
+.p-b-20{
+	padding-bottom: 1rem;
+}
+.p-l-5{
+	padding-left: .25rem;
+}
+.p-l-10{
+	padding-left: .5rem;
+}
+.p-l-15{
+	padding-left: .75rem;
+}
+.p-l-20{
+	padding-left: 1rem;
+}
+.p-r-5{
+	padding-right: .25rem;
+}
+.p-r-10{
+	padding-right: .5rem;
+}
+.p-r-15{
+	padding-right: .75rem;
+}
+.p-r-20{
+	padding-right: 1rem;
+}
+.m-t-5{
+	margin-top: .25rem;
+}
+.m-t-8{
+	margin-top: .4rem;
+}
+.m-t-10{
+	margin-top: .5rem;
+}
+.m-t-15{
+	margin-top: .75rem;
+}
+.m-t-20{
+	margin-top: 1rem;
+}
+.m-b-5{
+	margin-bottom: .25rem;
+}
+.m-b-10{
+	margin-bottom: .5rem;
+}
+.m-b-15{
+	margin-bottom: .75rem;
+}
+.m-b-20{
+	margin-bottom: 1rem;
+}
+.m-l-5{
+	margin-left: .25rem;
+}
+.m-l-7{
+	margin-left: .35rem;
+}
+.m-l-10{
+	margin-left: .5rem;
+}
+.m-l-15{
+	margin-left: .75rem;
+}
+.m-l-20{
+	margin-left: 1rem;
+}
+.m-l-35{
+	margin-left: 1.75rem;
+}
+.m-r-5{
+	margin-right: .25rem;
+}
+.m-r-10{
+	margin-right: .5rem;
+}
+.m-r-15{
+	margin-right: .75rem;
+}
+.m-r-20{
+	margin-right: 1rem;
+}
+.m-r-34{
+	margin-right: 1.7rem;
+}
+.m-5{
+	margin: .25rem;
+}
+.m-10{
+	margin: .5rem;
+}
+.m-15{
+	margin: .75rem;
+}
+.m-20{
+	margin: 1rem;
+}
+.p-5{
+	padding: .25rem;
+}
+.p-10{
+	padding: .5rem;
+}
+.p-15{
+	padding: .75rem;
+}
+.p-20{
+	padding: 1rem;
+}
+.p-40{
+	padding: 2rem;
+}
+.m-l-r-5{
+	margin-left: .25rem;
+	margin-right: .25rem;
+}
+.m-l-r-10{
+	margin-left: .5rem;
+	margin-right: .5rem;
+}
+.m-l-r-15{
+	margin-left: .75rem;
+	margin-right: .75rem;
+}
+.m-l-r-20{
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+.m-b-t-5{
+	margin-bottom: .25rem;
+	margin-top: .25rem;
+}
+.m-b-t-10{
+	margin-bottom: .5rem;
+	margin-top: .5rem;
+}
+.m-b-t-15{
+	margin-bottom: .75rem;
+	margin-top: .75rem;
+}
+.m-b-t-20{
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+.p-l-r-4{
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+.p-l-r-5{
+	padding-left: .25rem;
+	padding-right: .25rem;
+}
+.p-l-r-10{
+	padding-left: .5rem;
+	padding-right: .5rem;
+}
+.p-l-r-15{
+	padding-left: .75rem;
+	padding-right: .75rem;
+}
+.p-l-r-20{
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+.p-b-t-5{
+	padding-bottom: .25rem;
+	padding-top: .25rem;
+}
+.p-b-t-10{
+	padding-bottom: .5rem;
+	padding-top: .5rem;
+}
+.p-b-t-15{
+	padding-bottom: .75rem;
+	padding-top: .75rem;
+}
+.p-b-t-20{
+	padding-bottom: 1rem;
+	padding-top: 1rem;
+}
+/*文字对齐*/
+.text-l {
+	text-align: left;
+}
+.text-r {
+	text-align: right;
+}
+.text-c {
+	text-align: center;
+}
+.text-justify {
+	text-align: justify;
+}
+.v-b{
+	vertical-align: bottom;
+}
+.v-t{
+	vertical-align: top;
+}
+.v-m{
+	vertical-align: middle;
+}
+/*文字大小*/
+.f-s-12{
+	font-size: .6rem;
+}
+.f-s-14{
+	font-size: .7rem;
+}
+.f-s-15{
+	font-size: .75rem;
+}
+.f-s-16{
+	font-size: .8rem;
+}
+.f-s-18{
+	font-size: .9rem;
+}
+.f-s-20{
+	font-size: 1rem;
+}
+/*文字颜色*/
+.c-w{
+	color: white;
+}
+.c-3{
+	color: #333;
+}
+.c-6{
+	color: #666;
+}
+.c-9{
+	color: #999;
+}
+.c-45{
+	color: #454545;;
+}
+.c-3a94fa{
+	color: #3a94fa;
+}
+.c-ff5722{
+	color: #ff5722;
+}
+/*背景颜色*/
+.bg-n{
+	background: none;
+}
+.bg-h{
+	background: #fe5722;
+}
+.bg-w{
+	background: #fff;
+}
+.bg-f0{
+	background: #f0f0f0;
+}
+.bg-3a94fa;{
+	background: #3a94fa;;
+}
+/*浮动*/
+.pull-l{
+	float: left;
+}
+.pull-r{
+	float: right;
+}
+.clear{
+	overflow: hidden;
+}
+/*宽*/
+.w-b94{
+	width: 94%;
+}
+.w-b100{
+	width: 100%;
+}
+.w-b45{
+	width: 45%;
+}
+.w-b50{
+	width: 50%;
+}
+.w-b55{
+	width: 55%;
+}
+.w-b60{
+	width: 60%;
+}
+.w-6{
+	width: .3rem;
+}
+.w-100{
+	width: 5rem;
+}
+/*高*/
+.header-h{
+	height: 2.2rem;
+	line-height: 2.2rem;
+}
+.h-b100{
+	height: 100%;
+}
+.h-6{
+	height: .3rem;
+}
+.h-40{
+	height: 2rem;
+}
+.h-44{
+	height: 2.2rem;
+}
+.h-50{
+	height: 2.5rem;
+}
+.h-60{
+	height: 3rem;
+}
+/*行高*/
+.l-h-48{
+	line-height: 2.4rem;
+}
+/*VUE无数据组件*/
+#noData{
+	margin-top: 7.4rem;
+	text-align: center;
+}
+#noData .noDataImg{
+	width: 8.75rem;
+}
+#noData .box1{
+	font-size: .9rem;
+	color: #999;
+	margin-top: -1rem;
+}
+#noData .box2{
+	display: inline-block;
+	width: 5rem;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	border: solid .075rem #d2d2d2;
+	border-radius: .75rem;
+	font-size: .75rem;
+	color: #999;
+	margin-top: 1.5rem;
+}
+
+/*以下为页面样式*/
+
+/*comment*/
+#comment .content {
+	top: 2.2rem;
+	margin-bottom: 2.5rem;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+#comment .content .text img{
+	width: 100%;
+	margin-top: .5rem;
+}
+#comment .bt{
+	border-bottom: 1px solid #f0f0f0;
+}
+#comment footer .right img {
+	float: right;
+	margin-top: .65rem;
+}
+#comment footer .right .img1 {
+	margin-right: .5rem;
+	margin-left: 1.7rem;
+}
+#comment footer .right .img3 .dot {
+	width: auto;
+	min-width: 0.8rem;
+	height: 0.8rem;
+	line-height: 0.8rem;
+	background-color: #ff2600;
+	border-radius: 0.4rem;
+	top: 0.3rem;
+	left: 60%;
+}
