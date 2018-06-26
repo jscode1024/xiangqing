@@ -5,9 +5,47 @@
  * ========================================================================
  */
 @charset "UTF-8";
+/*通用动画*/
+/*点赞*/
+@-webkit-keyframes zanAnimation{
+	14%{transform: scale(1.5);opacity: .8;}
+	29%{transform: scale(2);opacity: .7;}
+	42%{transform: scale(2.5);opacity: .6;}
+	56%{transform: scale(2.1);opacity: .5;}
+	70%{transform: scale(1.7);opacity: .4;}
+	84%{transform: scale(1.4);opacity: .2;}
+	100%{transform: scale(1);opacity: .1;}
+}
+@-ms-keyframes zanAnimation{
+	14%{transform: scale(1.5);opacity: .8;}
+	29%{transform: scale(2);opacity: .7;}
+	42%{transform: scale(2.5);opacity: .6;}
+	56%{transform: scale(2.1);opacity: .5;}
+	70%{transform: scale(1.7);opacity: .4;}
+	84%{transform: scale(1.4);opacity: .2;}
+	100%{transform: scale(1);opacity: .1;}
+}
+@-moz-keyframes zanAnimation{
+	14%{transform: scale(1.5);opacity: .8;}
+	29%{transform: scale(2);opacity: .7;}
+	42%{transform: scale(2.5);opacity: .6;}
+	56%{transform: scale(2.1);opacity: .5;}
+	70%{transform: scale(1.7);opacity: .4;}
+	84%{transform: scale(1.4);opacity: .2;}
+	100%{transform: scale(1);opacity: .1;}
+}
+@keyframes zanAnimation{
+	14%{transform: scale(1.5);opacity: .8;}
+	29%{transform: scale(2);opacity: .7;}
+	42%{transform: scale(2.5);opacity: .6;}
+	56%{transform: scale(2.1);opacity: .5;}
+	70%{transform: scale(1.7);opacity: .4;}
+	84%{transform: scale(1.4);opacity: .2;}
+	100%{transform: scale(1);opacity: .1;}
+}
 /*通用样式*/
 *{
-	-webkit-user-select: none;
+	/*-webkit-user-select: none;*/
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 	font-family: PingFangSC-Regular;
@@ -64,7 +102,7 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
 }
 /*超出自动隐藏*/
 .ellipsis{
-	/*white-space : normal nowrap*/ 
+	/*/*white-space : normal nowrap*/ 
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -427,7 +465,7 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
 	background: #f0f0f0;
 }
 .bg-3a94fa;{
-	background: #3a94fa;;
+	background: #3a94fa;
 }
 /*浮动*/
 .pull-l{
@@ -493,7 +531,6 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
 }
 /*VUE无数据组件*/
 #noData{
-	margin-top: 7.4rem;
 	text-align: center;
 }
 #noData .noDataImg{
@@ -519,7 +556,19 @@ html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,str
 /*以下为页面样式*/
 
 /*comment*/
+#comment .zanAnimation{
+	animation: zanAnimation .8s;
+	-webkit-animation: zanAnimation .8s;
+	-moz-animation: zanAnimation .8s;
+	-ms-animation: zanAnimation .8s;
+}
 #comment .content {
+	background: #fff;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	top: 2.2rem;
 	margin-bottom: 2.5rem;
 	overflow-y: scroll;

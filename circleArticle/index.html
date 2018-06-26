@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<meta name="format-detection" content="telephone=no">
 		<title>帖子详情</title>
+		<link rel="shortcut icon" href="image/recommend_icon_hot@3x.png">
 		<link rel="stylesheet" type="text/css" href="css/vant.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<script src="../js/config.js" type="text/javascript" charset="utf-8"></script>
@@ -18,91 +19,96 @@
 					<div class="left pull-l"><img class="v-m" width="22" height="16" src="image/title_arrow_left@3x.png" /></div>
 				</a>
 				<div class="p-a l-b20 r-b20 w-b60 f-s-16 c-w ellipsis text-c l-h-48">{{postDetails.title}}</div>
-				<!--<div class="v-m pull-r"><img width="25" height="5" src="image/title_icon_more@3x.png" /></div>-->
+				<div @click="share()" class="v-m pull-r"><img width="25" height="5" src="image/title_icon_more@3x.png" /></div>
 			</header>
-			<div v-show="!this.reload" @scroll="scrollBottom()" @touchstart="addEventListener()" ref='content' class="content bg-w p-a w-b100 b-0 l-0 r-0">
-				<div class="f-s-18 p-b-t-20 p-l-r-10">
-					<strong>{{postDetails.title}}</strong>
-				</div>
-				<div @click="userInfor()" class="user b-b b-t p-10 active-f0">
-					<img class="b-r-b50 p-r t-4" width="40" height="40" :src="postDetails.headPortrait" />
-					<div class="d-i m-l-7">
-						<div>
-							<span class="f-s-15 c-45">{{postDetails.nickName}}</span>
-							<img v-if="postDetails.userRole=='EXPERT'" height="12" src="image/me_icon_zhuanjia@3x.png" />
-						</div>
-						<div class="f-s-12 c-9">{{postDetails.createTime}}</div>
+			<div v-show="!this.reload" @touchstart="addEventListener()" ref='content' class="content">
+				<van-list offset='1' v-model="loading" :finished="finished" @load="onLoad">
+					<div class="f-s-18 p-b-t-20 p-l-r-10">
+						<strong>{{postDetails.title}}</strong>
 					</div>
-					<div class="m-t-8 pull-r">
-						<img @click.stop="taggleUser('add')" v-if="postDetails.careforUserCount=='0'" height="30" src="image/button_add_nor.png" />
-						<img @click.stop="taggleUser('delete')" v-else="" height="30" src="image/button_add_dis.png" />
-					</div>
-				</div>
-				<div class="text p-t-20 p-l-r-10 p-b-10 f-s-16 c-45" v-html="postDetails.content"></div>
-				<div class="p-l-r-10">
-					<div class="clear p-b-20">
-						<div class="pull-l c-9 f-s-12">阅读量&nbsp;{{postDetails.hits}}</div>
-						<div class="pull-r c-9 f-s-12">点赞 &nbsp;{{postDetails.upvote}}</div>
-					</div>
-				</div>
-				<div @click="groupInfor()" class="h-60 b-t p-10 clear active-f0">
-					<img class="b-r-b50" width="60" height="60" :src="postDetails.topicGroupIconUrl" />
-					<div class="d-i v-t m-t-10 m-l-5 w-b55">
-						<div class="c-45 m-b-5 f-s-16 ellipsis">{{postDetails.topicGroupName}}</div>
-						<div class="c-9 f-s-12 ellipsis">{{postDetails.topicGroupDesc?postDetails.topicGroupDesc:'暂无简介'}}</div>
-					</div>
-					<div class="pull-r">
-						<img @click.stop="taggleGroup('add')" v-if="postDetails.careforGroupCount=='0'" width="60" height="30" src="image/button_add_nor.png" />
-						<img @click.stop="taggleGroup('delete')" v-else="" width="60" height="30" src="image/button_add_dis.png" />
-						<div>
-							<img class="v-m" width="14" src="image/recommend_icon_hot@3x.png" />
-							<span class="c-45 f-s-12 v-b">{{postDetails.topicGroupDegree}}</span>
-						</div>
-					</div>
-				</div>
-				<div class="p-5 bg-f0"></div>
-				<div id="commentTitle" :class="{bt:!isShowmessageList}" ref="commentTitle" class="c-45 f-s-16 p-10">精选评论</div>
-				<div>
-					<!--留言列表-->
-					<div v-for="item,index in messageList.list" class="clear b-t p-b-t-20 p-l-r-10">
-						<div class="commentDetails">
-							<div class="comment-L">
-								<img class="b-r-b50" width="30" height="30" :src="item.replyer.headPortrait" />
-								<span class="c-45 f-s-15 v-t p-r t-6">{{item.replyer.nickName}}</span>
-								<div class="pull-r">
-									<span class="f-s-12 c-ff5722">{{item.reply.upvote}}</span>
-									<img v-if="item.isZan" @click="Like(index,item.reply.id)" width="15" src="image/quanzi_icon_like_nor@3x.png" />
-									<img v-else="" width="15" src="image/quanzi_icon_like_press@3x.png" />
-								</div>
+					<div @click="userInfor(postDetails.userId)" class="user b-b b-t p-10">
+						<img class="b-r-b50 p-r t-4" width="40" height="40" :src="postDetails.headPortrait" />
+						<div class="d-i m-l-7">
+							<div>
+								<span class="f-s-15 c-45">{{postDetails.nickName}}</span>
+								<img v-if="postDetails.userRole=='EXPERT'" height="12" src="image/me_icon_zhuanjia@3x.png" />
 							</div>
-							<div class="m-l-35">
-								<div class="c-45 f-s-16 m-b-5">{{item.reply.content}}</div>
-								<div>
-									<span class="c-9 f-s-12">{{item.displayReplyTime}}</span>
-									<span class="d-i w-6 h-6 bg-3a94fa b-r-b50 m-l-20"></span>
-									<span @click="commentDetails(item.reply.id)" class="c-3a94fa f-s-12">{{item.childCount+'条回复'}}</span>
-								</div>
+							<div class="f-s-12 c-9">{{postDetails.createTime}}</div>
+						</div>
+						<div class="m-t-8 pull-r p-r">
+							<img @click.stop="taggleUser('add')" v-if="postDetails.careforUserCount=='0'" height="30" src="image/button_add_nor.png" />
+							<img @click.stop="taggleUser('delete')" v-else="" height="30" src="image/button_add_dis.png" />
+						</div>
+					</div>
+					<div id="textDetails" class="text p-t-20 p-l-r-10 p-b-10 f-s-16 c-45" v-html="postDetails.content"></div>
+					<div class="p-l-r-10">
+						<div class="clear p-b-20">
+							<div class="pull-l c-9 f-s-12">阅读量&nbsp;{{postDetails.hits}}</div>
+							<div class="pull-r c-9 f-s-12">点赞 &nbsp;{{postDetails.upvote}}</div>
+						</div>
+					</div>
+					<div @click="groupInfor()" class="h-60 b-t p-10 clear">
+						<img class="b-r-b50" width="60" height="60" :src="postDetails.topicGroupIconUrl" />
+						<div class="d-i v-t m-t-10 m-l-5 w-b55">
+							<div class="c-45 m-b-5 f-s-16 ellipsis">{{postDetails.topicGroupName}}</div>
+							<div class="c-9 f-s-12 ellipsis">{{postDetails.topicGroupDesc?postDetails.topicGroupDesc:'暂无简介'}}</div>
+						</div>
+						<div class="pull-r">
+							<img @click.stop="taggleGroup('add')" v-if="postDetails.careforGroupCount=='0'" width="60" height="30" src="image/button_add_nor.png" />
+							<img @click.stop="taggleGroup('delete')" v-else="" width="60" height="30" src="image/button_add_dis.png" />
+							<div>
+								<img class="v-m" width="14" src="image/recommend_icon_hot@3x.png" />
+								<span class="c-45 f-s-12 v-b">{{postDetails.topicGroupDegree}}</span>
 							</div>
 						</div>
 					</div>
-					<div v-if="!isShowmessageList" class="text-c p-40">
-						<img width="100" height="100" src="image/icon_result@2x.png" />
-						<div class="active-f0 text-c f-s-12 m-t-10 c-9">暂无评论内容</div>
+					<div class="p-5 bg-f0"></div>
+					<div id="commentTitle" :class="{bt:!isShowmessageList}" ref="commentTitle" class="c-45 f-s-16 p-10">精选评论</div>
+					<div>
+						<!--留言列表-->
+						<div v-for="item,index in messageList.list" class="clear b-t p-b-t-20 p-l-r-10">
+							<div class="commentDetails">
+								<div class="comment-L">
+									<img  @click="userInfor(item.replyer.id)"  class="b-r-b50" width="30" height="30"  :src="item.replyer.headPortrait" />
+									<span @click="userInfor(item.replyer.id)"  class="c-45 f-s-15 v-t p-r t-6">{{item.replyer.nickName}}</span>
+									<div class="pull-r">
+										<span class="f-s-12 c-ff5722">{{item.reply.upvote}}</span>
+										<img @click.stop="Like(index,item.reply.id)" v-if="item.isZan" width="15" src="image/quanzi_icon_like_nor@3x.png" />
+										<img @click.stop="Like(index,'return')" :id="'zan'+index" v-if="!item.isZan" width="15" src="image/quanzi_icon_like_press@3x.png" />
+									</div>
+								</div>
+								<div @click="replyComments(index,item.reply.rootTopicId,item.reply.id,item.replyer.id,item.replyer.nickName)" class="m-l-35">
+									<div class="c-45 f-s-16 m-b-5">
+										{{item.reply.content}}
+										<span class="c-3a94fa" v-if="item.twoCommentName">{{item.twoCommentName}}</span>
+									</div>
+									<div>
+										<span class="c-9 f-s-12">{{item.displayReplyTime}}</span>
+										<span v-show="item.childCount>0" class="d-i w-6 h-6 b-r-b50 m-l-20 bg-3a94fa" style="background: #3A94FA;"></span>
+										<span v-show="item.childCount>0" @click.stop="commentDetails(item.reply.id)" class="c-3a94fa f-s-12">{{item.childCount+'条回复'}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="!isShowmessageList" class="text-c p-40">
+							<img width="100" height="100" src="image/icon_result@2x.png" />
+							<div class="active-f0 text-c f-s-12 m-t-10 c-9">暂无评论内容</div>
+						</div>
 					</div>
-				</div>
-				<div v-show="isShowmessageList" class="text-c f-s-12 c-9 p-b-t-10">{{bottomText}}</div>
+					<div v-show="isShowbottom" class="text-c f-s-12 c-9 p-b-t-10">没有更多了...</div>
+				</van-list>
 			</div>
-			<footer v-show="!this.reload" class="bg-w h-50 p-a b-0 l-0 r-0 w-b100 b-t clear">
+			<footer v-show="!this.reload" class="bg-w h-50 p-a b-0 l-0 w-b100 b-t clear">
 				<div class="left w-b45 m-l-10 h-b100 pull-l">
 					<div class="h-40 m-t-5 bg-f0 b-r-35">
-						<input class="h-b100 w-b94 bg-n b-n c-9 f-s-15 outline-n p-l-r-10" @keydown.13="sendComment()" v-model="texts" ref="texts" id="texts" type="text" placeholder="说说你的想法..." />
+						<input class="h-b100 w-b94 bg-n b-n f-s-15 outline-n p-l-r-10" @click="focus()" @keydown.13="sendComment()" v-model="texts" ref="texts" id="texts" type="text" :placeholder="placeholder" />
 					</div>
 				</div>
 				<div class="right w-b50 h-b100 pull-l">
-					<img @click="myCollect()" v-show="!isCollect" class="img1" width="25" src="image/quanzi_icon_shoucang_nor@3x.png" />
-					<img @click="myCollect()" v-show="isCollect" class="img1" width="25" src="image/quanzi_icon_shoucang_sel@3x.png" />
+					<img @click="myCollect('Collect2')" v-if="!isCollect" class="img1" id="Collect1" width="25" src="image/quanzi_icon_shoucang_nor@3x.png" />
+					<img @click="myCollect('Collect1')" v-else="" class="img1" width="25" id="Collect2" src="image/quanzi_icon_shoucang_sel@3x.png" />
 					<img @click="footerLike()" v-if="isFooterZan" width="25" src="image/quanzi_icon_like_nor@3x.png" />
-					<img v-else="" width="25" src="image/quanzi_icon_like_press@3x.png" />
+					<img @click="footerLike(true)" v-else="" ref="bigZan" width="25" src="image/quanzi_icon_like_press@3x.png" />
 					<div @click="scrollTops()" class="img3 pull-r p-r t-4 m-r-34">
 						<span v-show="postDetails.replies>0" class="dot d-i text-c c-w z-999 p-a p-l-r-4 f-s-12">{{postDetails.replies>99?'99+':postDetails.replies}}</span>
 						<a href="#commentTitle">
@@ -112,205 +118,178 @@
 				</div>
 			</footer>
 			<!--加载失败时无数据组件-->
-			<com-nodata v-show="this.reload" @refresh="getPostDetails()" img-src="image/cuowu_img.png"></com-nodata>
+			<com-nodata v-show="reload" @refresh="getPostDetails()" margin-top="7.4rem" text-content="抱歉！詳情加载失败..." img-src="image/cuowu_img.png"></com-nodata>
 		</div>
 	</body>
 
 </html>
-<script src="javascript/qs.js" type="text/javascript" charset="utf-8"></script>
 <script src="javascript/vue.js" type="text/javascript" charset="utf-8"></script>
-<script src="javascript/component.js" type="text/javascript" charset="utf-8"></script>
 <script>
 	new Vue({
 		el: '#comment',
 		data: {
-			topicId: 828, //帖子ID
-			reload: true, //是否显示重新加载页面
+			topicId: '', //帖子ID
+			reload: true, //是否显示重新加载詳情页面
 			postDetails: '', //帖子详情
 			messageList: '', //评论列表
 			isShowmessageList: false, //是否有显示评论列表
 			isZan: true, //是否有权限点赞评论
+			total: '', //评论总条数
+			placeholder: '说说你的想法...', //
 			isFooterZan: true, //是否有权限点赞帖子
 			isCollect: false, //是否已收藏
+			isShowbottom: false, //是否顯示底部加載數據
 			texts: '', //留言内容	
-			hasNextPage: false, //是否存在下一頁
-			bottomText: '没有更多了...', //底部加载更多文字
 			cout: 1, //默認加載第一頁
+			loading: false, //加载中提示
+			finished: false, //是否已加载完成
+			twoCommentData: new Object(), //保存二级评论所需参数
 		},
 		created: function() {
 			this.getPostDetails(); //获取帖子详情
-			this.getMessageList(); //获取留言列表
 		},
 		methods: {
 			//获取帖子详情
 			getPostDetails: function() {
+				$zlj.toast('加载中...','loading');
 				try {
+					$zlj.getWindowUrl().collected == 'true' ? this.isCollect = true : this.isCollect = false; //是否已收藏
 					this.topicId = $zlj.getWindowUrl().tieziId; //帖子ID
-					$zlj.getWindowUrl().collected == 'false' ? this.isCollect = false : this.isCollect = true; //是否已收藏
+//					this.topicId=810;
+					$zlj.ajax('post','/h5/topic/group/selectTopicForGroup',{
+						topicId: this.topicId
+					}).then((ret) => {
+					  	if(ret.data.statusCode=='SUCCESS'){
+							vant.Toast.clear();
+							this.reload = false; //是否显示重新加载图片
+							this.postDetails = ret.data.data; //帖子详情
+							this.postDetails.upvote = $zlj.unitConversion(this.postDetails.upvote); //转换点赞数单位
+							this.postDetails.hits = $zlj.unitConversion(this.postDetails.hits); //转换查看数单位
+							this.postDetails.topicGroupDegree = $zlj.unitConversion(this.postDetails.topicGroupDegree); //转换圈子人气数单位
+							if($zlj.getCookie(this.postDetails.id)) this.isFooterZan = false; //如果当天已经点赞过就默认不允许点赞
+							this.getMessageList(); //获取留言列表
+						}else{
+							vant.Toast.clear();
+							vant.Toast.fail('请求未知错误');
+						}
+					}).catch((err) => {
+						vant.Toast.clear();
+					  	this.reload = true; //是否显示重新加载图片
+					})
 				} catch(e) {
-					$zlj.fail('URL异常');
-				}
-				$zlj.ajax('get', '/h5/topic/group/selectTopicForGroup?topicId=' + this.topicId, {}, (ret) => {
-					this.reload = false; //是否显示重新加载图片
-					this.postDetails = ret.data; //帖子详情
-					this.postDetails.upvote = this.unitConversion(this.postDetails.upvote); //转换点赞数单位
-					this.postDetails.hits = this.unitConversion(this.postDetails.hits); //转换查看数单位
-					this.postDetails.topicGroupDegree = this.unitConversion(this.postDetails.topicGroupDegree); //转换圈子人气数单位
-					if($zlj.getCookie(this.postDetails.id)) this.isFooterZan = false; //如果当天已经点赞过就默认不允许点赞
-				}, () => {
 					this.reload = true; //是否显示重新加载图片
-				})
+					$zlj.toast('URL异常','fail');
+				}
 			},
 			//用户个人中心
-			userInfor: function() {
-				window.location.href = window.g.ApiUrl + '/web/recommend/user/recommend?userId=' + this.postDetails.userId;
+			userInfor: function(id) {
+				window.location.href = window.g.ApiUrl + '/web/recommend/user/recommend?userId=' + id;
 			},
 			//圈子详情
 			groupInfor: function() {
 				window.location.href = window.g.ApiUrl + '/h5_static/topic_group/quanziinfo/index.html?quanziId=' + this.postDetails.group_id;
 			},
-			//单位转化
-			unitConversion: function(data) {
-				var dataLength = JSON.stringify(data).length;
-				if(dataLength < 4) {
-					return data;
-				} else if(dataLength == 4 && dataLength < 9) {
-					return Math.round(data / 1000 * 10) / 10 + 'K';
-				} else if(dataLength > 4 && dataLength < 9) {
-					return Math.round(data / 10000 * 10) / 10 + 'W';
-				} else if(dataLength > 8) {
-					return Math.round(data / 100000000 * 10) / 10 + '亿';
-				}
-			},
 			//获取评论列表
 			getMessageList: function() {
-				$zlj.ajax('get', '/mobile/reply/findReplyList?type=topic&mainPageNum=1&mainPageSize=10&childPageSize=0&rootTopicId=' + this.topicId, {}, (ret) => {
-					this.messageList = ret.data; //留言详情跟列表
-					this.messageList.list.length > 0 ? this.isShowmessageList = true : this.isShowmessageList = false; //是否显示留言列表
-					this.hasNextPage = this.messageList.hasNextPage; //是否存在下一頁
-					for(let i in this.messageList.list) {
-						if($zlj.getCookie(this.messageList.list[i].reply.id)) { //如果cookie存在说明不允许点赞
-							this.messageList.list[i].isZan = false; //不允许点赞
-						} else {
-							this.messageList.list[i].isZan = true; //允许点赞
+				$zlj.ajax('post', '/mobile/reply/findReplyList', {
+					type: 'topic',
+					mainPageNum: 1,
+					mainPageSize: 10,
+					childPageSize: 0,
+					rootTopicId: this.topicId
+				}).then((ret) => {
+				  	if(ret.data.statusCode=='SUCCESS'){
+						this.messageList = ret.data.data; //留言详情跟列表
+						this.messageList.list.length > 0 ? this.isShowmessageList = true : this.isShowmessageList = false; //是否显示留言列表
+						this.total = this.messageList.total; //总条数
+						for(let i in this.messageList.list) {
+							if($zlj.getCookie(this.messageList.list[i].reply.id)) { //如果cookie存在说明不允许点赞
+								this.messageList.list[i].isZan = false; //不允许点赞
+							} else {
+								this.messageList.list[i].isZan = true; //允许点赞
+							}
+							this.messageList.list[i].reply.upvote = $zlj.unitConversion(this.messageList.list[i].reply.upvote); ////转换点赞数单位
 						}
-						this.messageList.list[i].reply.upvote = this.unitConversion(this.messageList.list[i].reply.upvote); ////转换点赞数单位
+					}else{
+						vant.Toast.fail('获取评论失败');
 					}
 				})
 			},
 			//评论列表点赞
 			Like: function(index, id) {
-				this.messageList.list[index].isZan = false; //点赞权限
-				$zlj.ajax('get', '/h5/reply/add_upvote?replyId=' + id, {}, (ret) => {
-					this.messageList.list[index].reply.upvote += 1;
-					$zlj.success('点赞成功');
-					this.messageList.list[index].isZan = false;
-					$zlj.setCookie(id, id, 1); //设置cookie
-				}, () => {
-					//					$zlj.fail('点赞失败')
-					this.messageList.list[index].isZan = true;
+				if(id == 'return') {
+					vant.Toast('你已经点过赞了，不能重复点赞');
+					return;
+				}
+				$zlj.ajax('post', '/h5/reply/add_upvote', {
+					replyId: id
+				}).then((ret) => {
+				  	if(ret.data.statusCode=='SUCCESS'){
+						this.messageList.list[index].isZan = false;
+						this.messageList.list[index].reply.upvote += 1;
+						$zlj.setCookie(id, id, 1); //设置cookie
+						setTimeout(() => {
+							document.querySelector('#zan' + index).classList.add('zanAnimation');
+						}, 50)
+					}else{
+						vant.Toast.fail('点赞失败');
+					}
+				})
+			},
+			//帖子点赞
+			footerLike: function(iszan) {
+				if(iszan) {
+					vant.Toast('你已经点过赞了，不能重复点赞');
+					return;
+				}
+				$zlj.ajax('get', '/web/topic/topicaddupvotes', {
+					topicId: this.postDetails.id
+				}).then((ret) => {
+				  	if(ret.data.statusCode=='SUCCESS'){
+						this.postDetails.upvote++;
+						this.isFooterZan = false;
+						$zlj.setCookie(this.postDetails.id, this.postDetails.id, 1); //设置cookie
+						setTimeout(() => {
+							this.$refs.bigZan.classList.add('zanAnimation');
+						}, 50)
+					}else{
+						vant.Toast.fail('点赞失败');
+					}
 				})
 			},
 			//查看二级评论
 			commentDetails: function(id) {
-				window.location.href = $window.g.ApiUrl + '/h5/reply/' + id + '/article_reply_frame';
-			},
-			//帖子点赞
-			footerLike: function() {
-				this.isFooterZan = !this.isFooterZan; //点赞权限
-				axios({
-					method: 'get',
-					url: window.g.ApiUrl + '/web/topic/topicaddupvotes?topicId=' + this.postDetails.id,
-					timeout: 60,
-				}).then((ret) => {
-					this.postDetails.upvote += 1;
-					this.isFooterZan = false;
-					$zlj.setCookie(this.postDetails.id, this.postDetails.id, 1); //设置cookie
-					$zlj.success('点赞成功');
-				}).catch(() => {
-					this.isFooterZan = true;
-					//					$zlj.fail('点赞失败')
-				})
+				window.location.href = window.g.ApiUrl + '/h5/reply/' + id + '/article_reply_frame';
 			},
 			//关注、取消关注用户
 			taggleUser: function(type) {
-				axios({
-					method: 'post',
-					url: window.g.ApiUrl + '/web/usercarefro/carefro?type=' + type + '&toUserId=' + this.postDetails.userId,
-					timeout: 60,
-				}).then((ret) => {
-					if(ret.data.statusCode == 'SUCCESS') { //已登陆
-						type == 'add' ? this.postDetails.careforUserCount = 1 : this.postDetails.careforUserCount = 0;
-						$zlj.success(type == 'add' ? '关注成功' : '取消成功');
-						return;
-					} else if(ret.data.statusCode == 'IS_GUEST') { //遊客
-						vant.Toast(ret.data.data);
-						setTimeout(() => {
-							window.location.href = window.g.ApiUrl + '/h5/user/to_reset_user';
-						}, 1000);
-					} else if(ret.data.statusCode == 'UNAUTHORIZED') { //未登錄
-						vant.Toast(ret.data.data);
-						setTimeout(() => {
-							window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-						}, 1000);
-					} else {
-						$zlj.fail('服务器异常')
-					}
-				}).catch((err) => {
-					try {
-						if(err.response.status == 401 && err.response.data.statusCode == 'UNAUTHORIZED') { //未登錄
-							vant.Toast(err.response.data.message);
-							setTimeout(() => {
-								window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-							}, 1000);
-						}
-					} catch(e) {
-						$zlj.fail('用戶关注异常')
-					}
-				})
+				$zlj.loginAjax('post', '/web/usercarefro/carefro', {
+					type: type,
+					toUserId: this.postDetails.userId
+				}, (ret) => {
+					type == 'add' ? this.postDetails.careforUserCount = 1 : this.postDetails.careforUserCount = 0;
+					$zlj.toast(type == 'add' ? '关注成功' : '取消成功','success');
+				});
 			},
 			//关注、取消关注圈子
 			taggleGroup: function(type) {
-				axios({
-					method: 'post',
-					url: window.g.ApiUrl + '/h5/careforGroup/carefor?topicGroupId=' + this.postDetails.group_id + '&type=' + type,
-					timeout: 60,
-				}).then((ret) => {
-					if(ret.data.statusCode == 'SUCCESS') { //已登陆
-						type == 'add' ? this.postDetails.careforGroupCount = 1 : this.postDetails.careforGroupCount = 0;
-						$zlj.success(type == 'add' ? '关注成功' : '取消成功');
-						return;
-					} else if(ret.data.statusCode == 'IS_GUEST') { //遊客
-						vant.Toast(ret.data.data);
-						setTimeout(() => {
-							window.location.href = window.g.ApiUrl + '/h5/user/to_reset_user';
-						}, 1000);
-					} else if(ret.data.statusCode == 'UNAUTHORIZED') { //未登錄
-						vant.Toast(ret.data.data);
-						setTimeout(() => {
-							window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-						}, 1000);
-					} else if(ret.data.statusCode == 'UNAUTHORIZED') {
-
-					} else {
-						$zlj.fail('服务器异常')
-					}
-				}).catch((err) => {
-					try {
-						if(err.response.status == 401 && err.response.data.statusCode == 'UNAUTHORIZED') { //未登錄
-							vant.Toast(err.response.data.message);
-							setTimeout(() => {
-								window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-							}, 1000);
-						}
-					} catch(e) {
-						$zlj.fail('圈子关注异常')
-					}
-				})
+				$zlj.loginAjax('post', '/h5/careforGroup/carefor', {
+					topicGroupId: this.postDetails.group_id,
+					type: type
+				}, (ret) => {
+					type == 'add' ? this.postDetails.careforGroupCount = 1 : this.postDetails.careforGroupCount = 0;
+					$zlj.toast(type == 'add' ? '关注成功' : '取消成功','success');
+				});
 			},
 			//收藏、取消收藏
-			myCollect: function() {
+			myCollect: function(id) {
 				this.isCollect = !this.isCollect;
+				setTimeout(() => {
+					document.querySelector('#' + id).classList.add('zanAnimation');
+					setTimeout(() => {
+						document.querySelector('#' + id).classList.remove('zanAnimation');
+					}, 800)
+				}, 50)
 				window.browserController && window.browserController.myCollect && window.browserController.myCollect(window.location.href, this.postDetails.title, this.isCollect);
 				window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myMobile.postMessage({
 					"method": "myCollect",
@@ -321,56 +300,151 @@
 					}
 				});
 			},
+			//为了让输入框永远固定在键盘上
+			focus:function(){
+				setTimeout(()=>{
+					document.querySelector('input').scrollIntoView(true);
+				},500);
+			},
+			//分享
+			share:function(){
+				var content,iconUrl;
+				content=document.querySelector('#textDetails').innerText;
+				if(document.querySelector('#textDetails img')){
+					iconUrl=document.querySelector('#textDetails img').getAttribute('src');
+				}else{
+					iconUrl='http://p17.qhimg.com/t01fee35e24b40a77e8.png';
+				}
+				window.browserController && window.browserController.toShare && window.browserController.toShare(window.location.href, this.postDetails.title, content, iconUrl);
+				window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myMobile.postMessage({
+					"method": "toShare",
+					"args": {
+						"content ": content, //分享内容
+						'iconUrl': iconUrl, //图标
+						'shareLink': window.location.href, //页面链接
+						'title':this.postDetails.title//标题
+					}
+				});
+			},
 			//触摸内容区屏幕
 			addEventListener: function() {
 				this.$refs.texts.blur();
+				this.finished = false; //可以執行上拉加載更多事件
+				this.texts = ''; //清空回复内容
+				this.placeholder = '说说你的想法...'; //还原默认值
+				this.twoCommentData = new Object();
+			},
+			//点击开始二级评论
+			replyComments: function(index, rootTopicId, parentTopicId, replyTo, nickName) {
+				this.$refs.texts.focus();
+				this.placeholder = '回复：' + nickName;
+				this.twoCommentData = { //保存二级评论时后台所需参数
+					type: 'topic',
+					rootTopicId: rootTopicId, //帖子主键ID
+					parentTopicId: parentTopicId, //父评论的主键ID
+					replyTo: replyTo, //父评论发表人主键ID
+					nickName: nickName, //父评论的昵称
+					index: index
+				}
+				setTimeout(()=>{
+					document.querySelector('input').scrollIntoView(true);
+				},500);
+			},
+			//发送一级评论
+			sendOneComment: function() {
+				axios.post(window.g.ApiUrl + '/h5/new_reply/save', Qs.stringify({
+					rootTopicId: this.postDetails.id,
+					content: this.texts,
+					type: 'topic'
+				}), {
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then((ret) => {
+					if(ret.data.statusCode == 'SUCCESS') {
+						$zlj.toast(ret.data.message,'success')
+						this.texts = '';
+						ret.data.data.isZan = true; //允许点赞
+						this.messageList.list.push(ret.data.data);
+						this.postDetails.replies++; //评论条数+1
+						this.isShowmessageList = true; //隐藏无评论图标
+						this.finished = true; //加载已全部完成,为了不执行上拉加载更多方法
+						setTimeout(() => {
+							this.$refs.content.scrollTop = this.$refs.content.scrollHeight; //滚动到底部
+						}, 100);
+						return;
+					} else if(ret.data.statusCode == 'IS_GUEST') { //遊客
+						vant.Toast(ret.data.message);
+						setTimeout(() => {
+							window.location.href = window.g.ApiUrl + '/h5/user/to_reset_user';
+						}, 1000);
+					} else {
+						$zlj.toast('发表失敗','fail');
+					}
+				}).catch((err) => {
+					try {
+						if(err.response.status == 401 && err.response.data.statusCode == 'UNAUTHORIZED') { //未登錄
+							vant.Toast(err.response.data.message);
+							setTimeout(() => {
+								$zlj.viewLoginPage();
+							}, 1000);
+						}
+					} catch(e) {
+						//$zlj.fail('未知异常');
+					}
+				})
+			},
+			//发送二级评论
+			sendTwoComment: function() {
+				this.twoCommentData.content = this.texts; //回复内容
+				axios.post(window.g.ApiUrl + '/h5/new_reply/save', Qs.stringify(this.twoCommentData), {
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then((ret) => {
+					if(ret.data.statusCode == 'SUCCESS') {
+						$zlj.toast(ret.data.message,'success');
+						ret.data.data.isZan = true; //允许点赞
+						this.messageList.list[this.twoCommentData.index].childCount++; //回复数加1
+						this.texts = '';
+						ret.data.data.twoCommentName = '//@' + this.twoCommentData.nickName; //是否显示二级评论的评论人name
+						this.placeholder = '说说你的想法...';
+						this.postDetails.replies++; //评论条数+1
+						this.messageList.list.push(ret.data.data);
+						this.finished = true; //加载已全部完成,为了不执行上拉加载更多方法
+						setTimeout(() => {
+							this.$refs.content.scrollTop = this.$refs.content.scrollHeight; //滚动到底部
+						}, 100);
+						return;
+					} else if(ret.data.statusCode == 'IS_GUEST') { //遊客
+						vant.Toast(ret.data.message);
+						setTimeout(() => {
+							window.location.href = window.g.ApiUrl + '/h5/user/to_reset_user';
+						}, 1000);
+					} else {
+						$zlj.toast('发表失敗','fail')
+					}
+				}).catch((err) => {
+					try {
+						if(err.response.status == 401 && err.response.data.statusCode == 'UNAUTHORIZED') { //未登錄
+							vant.Toast(err.response.data.message);
+							setTimeout(() => {
+								$zlj.viewLoginPage();
+							}, 1000);
+						}
+					} catch(e) {
+						//$zlj.fail('未知异常');
+					}
+				})
 			},
 			//保存评论
 			sendComment: function() {
 				if(this.texts) {
-					axios.post(window.g.ApiUrl + '/h5/new_reply/save', Qs.stringify({
-						rootTopicId: this.postDetails.id,
-						content: this.texts,
-						type:'topic'
-					}), {
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						}
-					}).then((ret) => {
-						if(ret.data.statusCode == 'SUCCESS') {
-							$zlj.success(ret.data.message)
-							this.texts = '';
-							this.messageList.list.push(ret.data.data);
-							setTimeout(() => {
-								this.$refs.content.scrollTop = this.$refs.content.scrollHeight;//滚动到底部
-							}, 100);
-							return;
-						} else if(ret.data.statusCode == 'IS_GUEST') { //遊客
-							vant.Toast(ret.data.message);
-							setTimeout(() => {
-								window.location.href = window.g.ApiUrl + '/h5/user/to_reset_user';
-							}, 1000);
-						} else if(ret.data.statusCode == 'UNAUTHORIZED') { //未登錄
-							vant.Toast(ret.data.message);
-							setTimeout(() => {
-								window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-							}, 1000);
-						} else {
-							$zlj.fail('发表失敗')
-						}
-					}).catch((err) => {
-						console.log(JSON.stringify(err))
-						try {
-							if(err.response.status == 401 && err.response.data.statusCode == 'UNAUTHORIZED') { //未登錄
-								vant.Toast(err.response.data.message);
-								setTimeout(() => {
-									window.location.href = window.g.ApiUrl + '/h5/user/to_login';
-								}, 1000);
-							}
-						} catch(e) {
-							$zlj.fail('发表异常')
-						}
-					})
+					if(this.placeholder == '说说你的想法...') { //一级评论
+						this.sendOneComment();
+					} else { //二级评论
+						this.sendTwoComment();
+					}
 				} else {
 					vant.Toast('您还未输入任何内容');
 				}
@@ -382,64 +456,45 @@
 				this.$refs.content.scrollTop = offsetTop;
 			},
 			//监听滚动到底部加载更多
-			scrollBottom: function(e) {
-				vant.Toast(typeof(this.hasNextPage));
-				vant.Toast(this.hasNextPage);
-				if(!this.hasNextPage) {
-					this.bottomText = '没有更多了...';
+			onLoad: function() {
+				if(this.messageList.list.length >= this.total) {
+					this.isShowbottom = true; //顯示底部已經到底了
+					this.finished = true; //加载已全部完成
+					this.loading = false; //隐藏底部加载中提示
 					return;
 				}
-				let scrollHeight = this.$refs.content.scrollHeight;
-				let scrollTop = this.$refs.content.scrollTop;
-				let clientHeight = this.$refs.content.clientHeight;
-				if(scrollHeight - scrollTop === clientHeight) {
-					this.bottomText = '正在加载更多...';
-					this.cout++;
-					$zlj.ajax('get', '/mobile/reply/findReplyList?type=topic&mainPageSize=10&childPageSize=0&mainPageNum=' + this.cout + '&rootTopicId=' + this.postDetails.id, {}, (ret) => {
-						this.hasNextPage = ret.data.data.hasNextPage; //是否存在下一頁
-						for(let i in ret.data.data.list) {
-							ret.data.data.list[i].isZan = true; //默认所有列表都允许点赞
-							ret.data.data.list[i].reply.upvote = this.unitConversion(ret.data.data.list[i].reply.upvote); ////转换点赞数单位
-							this.messageList.list.push(ret.data.data.list[i]); //将加载出来的数据插入到之前数据后面
-						}
-					}, () => {
-						$zlj.fail('加载异常')
-					})
-				}
-			},
-			GetQueryString: function(name) {
-				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-				var r = window.location.search.substr(1).match(reg);
-				if(r != null) {
-					return unescape(r[2]);
-				}
-				return null;
+				this.cout++;
+				$zlj.ajax('post', '/mobile/reply/findReplyList', {
+					type: 'topic',
+					mainPageNum: this.cout,
+					mainPageSize: 10,
+					childPageSize: 0,
+					rootTopicId: this.topicId
+				}).then((ret) => {
+				  	if(ret.data.statusCode=='SUCCESS'){
+						setTimeout(() => {
+							this.loading = false; //隐藏底部加载中提示
+							for(let i in ret.data.data.list) {
+								if($zlj.getCookie(ret.data.data.list[i].reply.id)) { //如果cookie存在说明不允许点赞
+									ret.data.data.list[i].isZan = false; //不允许点赞
+								} else {
+									ret.data.data.list[i].isZan = true; //允许点赞
+								}
+								ret.data.data.list[i].reply.upvote = $zlj.unitConversion(ret.data.data.list[i].reply.upvote); ////转换点赞数单位
+								this.messageList.list.push(ret.data.data.list[i])
+							}
+						}, 1000);
+					}else{
+						vant.Toast.fail('加载失败');
+						this.loading = false;
+					}
+				}).catch((err) => {
+				  	this.loading = false;
+				})
 			},
 			//返回
 			goHistoryPage: function() {
-				var isApp = this.GetQueryString("isApp");
-				if(isApp && isApp == 'Y') {
-					var u = navigator.userAgent;
-					var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-					var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-					if(isAndroid) {
-						window.browserController && window.browserController.goBackLastPage && window.browserController.goBackLastPage("");
-						window.history.go(-1);
-					} else if(isiOS) {
-						window.webkit && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myMobile.postMessage({
-							"method": "goBackLastPage",
-							"args": {
-								"url": null
-							}
-						});
-						window.history.go(-1);
-					} else {
-						window.history.go(-1);
-					}
-
-				} else {
-					window.history.go(-1);
-				}
+				$zlj.goHistoryPage();
 			},
 		},
 	});
